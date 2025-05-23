@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
-import InlineSuggestion from '@sereneinserenade/tiptap-inline-suggestion';
+import InlineSuggestion from '@merin-ai/tiptap-inline-suggestion';
 import Link from '@tiptap/extension-link'
 
 import { initContent } from './initContent'
@@ -12,7 +12,24 @@ const editor = useEditor({
     StarterKit,
     InlineSuggestion.configure(
       {
-        fetchAutocompletion: async () => 'A suggestion fetched from the API',
+        fetchAutocompletion: async (existingText: string) => {
+          console.log(`🚀 API Call at ${new Date().toLocaleTimeString()}: "${existingText}"`);
+          
+          // Simulate API delay
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+          // Return a mock suggestion
+          const suggestions = [
+            " and this completes your thought",
+            " with some helpful context",
+            " making your writing better",
+            " that adds valuable information",
+            " continuing this sentence naturally",
+          ];
+          
+          return suggestions[existingText.length % suggestions.length];
+        },
+        debounceTime: 250, // 250ms debounce for demo purposes
       }
     ),
     Link.configure({
@@ -21,14 +38,14 @@ const editor = useEditor({
   ],
   editorProps: {
     attributes: {
-      class: 'prose prose-invert w-[768px] focus:outline-none'
+      class: 'prose w-[768px] focus:outline-none'
     }
   }
 })
 </script>
 
 <template>
-  <div className='p-8 border border-slate-100 min-h-[200px] h-fit rounded-lg'>
+  <div className='h-fit rounded-lg'>
     <EditorContent class="focus:outline-none" :editor="editor" />
   </div>
 </template>

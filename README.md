@@ -1,22 +1,22 @@
-# InlineSuggestion
+# Tiptap Inline Suggestion
 
-![npm downloads](https://img.shields.io/npm/dt/%40sereneinserenade%2Ftiptap-inline-suggestion?style=for-the-badge&logo=npm&color=black)
+![npm downloads](https://img.shields.io/npm/dt/%40merin-ai%2Ftiptap-inline-suggestion?style=for-the-badge&logo=npm&color=black)
 
-A tiptap extension that allows you to add inline suggestions to your editor.
+A Tiptap extension that provides AI-powered inline suggestions with debounced API calls and tab-to-complete functionality.
 
-**Live Demo**: https://sereneinserenade.github.io/tiptap-inline-suggestion/
+> **Note**: This package is a fork of `@sereneinserenade/tiptap-inline-suggestion` with significant improvements including debouncing, better TypeScript support, and enhanced suggestion handling.
+
+<!-- **Live Demo**: https://sereneinserenade.github.io/tiptap-inline-suggestion/ -->
 
 <details open>
 <summary> Video Demo </summary>
-
-https://github.com/sereneinserenade/tiptap-inline-suggestion/assets/45892659/b69efd59-f853-4c03-9a03-85044e43f58a
 
 </details>
 
 ## Installation
 
 ```bash
-npm install @sereneinserenade/tiptap-inline-suggestion
+npm install @merin-ai/tiptap-inline-suggestion
 ```
 
 ## Usage
@@ -28,28 +28,25 @@ Add styles to show the suggestion that gets stored in the attribute `data-inline
 ```ts
 import { Editor } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
-import InlineSuggestion from "@sereneinserenade/tiptap-inline-suggestion";
+import InlineSuggestion from "@merin-ai/tiptap-inline-suggestion";
 
-const editor = new Editor(
-  {
-    extensions: [
-      StarterKit,
-      // add InlineSuggestions to the array of tiptap extensions
-      InlineSuggestion.configure(
-        {
-          fetchAutocompletion: async (query) => {
-            // make request to your API or something else
-            const res = await fetch(`YOUR_API_ENDPOINT?query=${query}`)
+const editor = new Editor({
+  extensions: [
+    StarterKit,
+    // add InlineSuggestions to the array of tiptap extensions
+    InlineSuggestion.configure({
+      fetchAutocompletion: async (query) => {
+        // make request to your API or something else
+        const res = await fetch(`YOUR_API_ENDPOINT?query=${query}`);
 
-            const stringRes = res.suggestion; // or whatever your API returns
+        const stringRes = res.suggestion; // or whatever your API returns
 
-            return stringRes; // return value should always be a string
-          }
-        }
-      ),
-    ],
-  }
-)
+        return stringRes; // return value should always be a string
+      },
+      debounceTime: 250, // optional: debounce API calls (default: 250ms)
+    }),
+  ],
+});
 ```
 
 ```css
@@ -59,13 +56,41 @@ const editor = new Editor(
 }
 ```
 
-## My
+## Configuration Options
 
-A ⭐️ to the repo if you 👍 / ❤️  what I'm doing would be much appreciated. If you're using this extension, it'd be very kind of you to **[:heart: Sponsor me](https://github.com/sponsors/sereneinserenade)**.
+| Option                | Type                                 | Default  | Description                                                                             |
+| --------------------- | ------------------------------------ | -------- | --------------------------------------------------------------------------------------- |
+| `fetchAutocompletion` | `(query: string) => Promise<string>` | Required | Function that fetches suggestions from your API                                         |
+| `debounceTime`        | `number`                             | `250`    | Milliseconds to wait before making API calls (prevents excessive requests while typing) |
 
-I've made a bunch of extensions for Tiptap 2, some of them are **Resiable Images And Videos**, **Search and Replace**, **LanguageTool integration** with tiptap. You can check it our here https://github.com/sereneinserenade#a-glance-of-my-projects.
+## How It Works
 
+1. **User types text** → Normal editing experience
+2. **User presses Space/Enter** → Triggers suggestion fetching (debounced)
+3. **Suggestion appears** → Gray text displayed after cursor
+4. **User presses Tab** → Accepts and inserts the suggestion
+5. **User continues typing** → Suggestion is cleared
+
+The debouncing prevents excessive API calls when users type quickly, saving costs and improving performance.
+
+## Features
+
+- ✅ **Debounced API calls** - Configurable debounce time (default 250ms)
+- ✅ **Tab to complete** - Intuitive suggestion acceptance
+- ✅ **TypeScript support** - Full type safety and IntelliSense
+- ✅ **Framework agnostic** - Works with React, Vue, or vanilla JS
+
+## Credits
+
+This package is forked from [`@sereneinserenade/tiptap-inline-suggestion`](https://github.com/sereneinserenade/tiptap-inline-suggestion) by [Jeet Mandaliya](https://github.com/sereneinserenade).
+
+**Enhancements in this fork:**
+
+- Added configurable debouncing for API calls
+- Improved TypeScript support and type safety
+- Better error handling and null checks
+- Enhanced documentation
 
 ## License
 
-MIT © Jeet Mandaliya(github: sereneinserenade)
+MIT © Merin AI

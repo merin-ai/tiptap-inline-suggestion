@@ -1,38 +1,54 @@
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import Link from '@tiptap/extension-link'
-import InlineSuggestion from '@sereneinserenade/tiptap-inline-suggestion'
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Link from "@tiptap/extension-link";
+import InlineSuggestion from "@merin-ai/tiptap-inline-suggestion";
 
-import { initContent } from './initContent'
+import { initContent } from "./initContent";
 
-import './tiptap.css'
+import "./tiptap.css";
 
 export const Tiptap = () => {
-  const editor = useEditor(
-    {
-      extensions: [
-        StarterKit,
-        InlineSuggestion.configure(
-          {
-            fetchAutocompletion: async () => 'A suggestion fetched from the API',
-          }
-        ),
-        Link.configure({
-          autolink: true,
-        }),
-      ],
-      content: initContent,
-      editorProps: {
-        attributes: {
-          class: 'prose prose-invert w-[768px] focus:outline-none'
-        }
-      }
-    }
-  )
+	const editor = useEditor({
+		extensions: [
+			StarterKit,
+			InlineSuggestion.configure({
+				fetchAutocompletion: async (existingText: string) => {
+					console.log(
+						`🚀 API Call at ${new Date().toLocaleTimeString()}: "${existingText}"`,
+					);
 
-  return (
-    <div className='p-8 border border-slate-100 min-h-[200px] h-fit rounded-lg'>
-      <EditorContent className='focus:outline-none' editor={editor} />
-    </div>
-  )
-}
+					// Simulate API delay
+					await new Promise((resolve) => setTimeout(resolve, 100));
+
+					// Return a mock suggestion based on content
+					const suggestions = [
+						" and this completes your thought",
+						" with some helpful context",
+						" making your writing better",
+						" that adds valuable information",
+						" continuing this sentence naturally",
+					];
+
+					return suggestions[existingText.length % suggestions.length];
+				},
+				debounceTime: 250, // 250ms debounce for demo purposes
+			}),
+			Link.configure({
+				autolink: true,
+			}),
+		],
+		content: initContent,
+		editorProps: {
+			attributes: {
+				class:
+					"prose w-[768px] focus:outline-none prose-headings:font-medium prose-h2:text-3xl",
+			},
+		},
+	});
+
+	return (
+		<div className="p-8 h-fit rounded-lg">
+			<EditorContent className="focus:outline-none" editor={editor} />
+		</div>
+	);
+};

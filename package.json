@@ -1,7 +1,7 @@
 {
-  "name": "@sereneinserenade/tiptap-inline-suggestion",
-  "version": "0.0.2",
-  "description": "Tiptap Extension for adding inline suggestions. Ex. for AI autocompletion.",
+  "name": "@merin-ai/tiptap-inline-suggestion",
+  "version": "0.1.0",
+  "description": "Tiptap Extension for AI-powered inline suggestions with debounced API calls and tab-to-complete functionality.",
   "keywords": [
     "tiptap",
     "tiptap-extension",
@@ -9,21 +9,23 @@
     "text editor",
     "inline suggestion",
     "ai-autocompletion",
-    "prosemirror"
+    "prosemirror",
+    "debounce",
+    "typescript"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/sereneinserenade/tiptap-inline-suggestion/"
+    "url": "git+https://github.com/merin-ai/tiptap-inline-suggestion.git"
   },
-  "author": "Jeet Mandaliya (github: sereneinserenade)",
-  "funding": {
-    "type": "individual",
-    "url": "https://github.com/sponsors/sereneinserenade"
-  },
+  "author": "Merin AI",
   "license": "MIT",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && rollup -c",
