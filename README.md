@@ -11,7 +11,7 @@ A Tiptap extension that provides AI-powered inline suggestions with debounced AP
 <details open>
 <summary> Video Demo </summary>
 
-https://github.com/merin-ai/tiptap-inline-suggestion/blob/main/assets/demo.mp4
+https://github.com/user-attachments/assets/a292511d-8b4f-461e-a85c-3856a95df880
 
 </details>
 
